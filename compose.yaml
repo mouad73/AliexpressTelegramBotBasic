@@ -1,0 +1,27 @@
+services:
+  samisaver:
+    build:
+      context: .
+    image: samisaver-bot:${SAMISAVER_IMAGE_TAG:-local}
+    container_name: samisaver-bot
+    env_file:
+      - .env
+    environment:
+      # An empty webhook selects Telegram long polling. No public port is needed.
+      WEBHOOK_URL: ""
+    init: true
+    restart: unless-stopped
+    mem_limit: 160m
+    cpus: 0.50
+    pids_limit: 128
+    read_only: true
+    tmpfs:
+      - /tmp:size=16m,mode=1777
+    security_opt:
+      - no-new-privileges:true
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: "3"
+    stop_grace_period: 30s

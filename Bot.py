@@ -180,7 +180,8 @@ def welcome_user(message):
 @bot.message_handler(func=lambda message: True)
 def echo_all(message):
     try:
-        print(f"Message received: {message.text}")
+        # Avoid writing private Telegram message bodies to persistent logs.
+        print("Message received")
         link = extract_link(message.text)
         sent_message = bot.send_message(message.chat.id, 'المرجو الانتظار قليلا، يتم تجهيز العروض ⏳')
         message_id = sent_message.message_id
@@ -201,7 +202,8 @@ def extract_link(text):
     link_pattern = r'https?://\S+|www\.\S+'
     links = re.findall(link_pattern, text)
     if links:
-        print(f"Extracted link: {links[0]}")
+        # The link can contain user-specific tracking parameters.
+        print("AliExpress link extracted")
         return links[0]
     return None
 
